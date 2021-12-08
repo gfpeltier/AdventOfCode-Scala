@@ -3,37 +3,34 @@ package aoc2020
 import scala.collection.mutable
 
 object Day15 {
-  class NumGame(var turnCount: Int, var lastNum: Int, var histIdxs: mutable.Map[Int, Int]) {
+
+  class NumGame(var history: Map[Int, Int], var lastNum: Int, var turnCount: Int) {
     def nextNum: Int = {
-      var next = 0
-      if (histIdxs.contains(lastNum)) next = turnCount - histIdxs(lastNum)
-      histIdxs += (lastNum -> turnCount)
-      lastNum = next
+      println(s"Last num: $lastNum")
       turnCount += 1
+      var next = 0
+      if (history.contains(lastNum)) {
+        next = turnCount - history(lastNum)
+      }
+      println(s"Next: $next")
+      lastNum = next
+      history += (next -> turnCount)
       next
     }
   }
 
   object NumGame {
     def fromInitState(s: String): NumGame = {
-      val nums = s.split(',').map(_.toInt).toList
-      val m = nums
-        .slice(0, nums.length - 1)
-        .zipWithIndex
-        .foldLeft(mutable.Map.empty[Int, Int])((m, ni) => m + (ni._1 -> (ni._2 + 1)))
-      new NumGame(nums.size, nums.last, m)
+      val nums = s.split(',').map(_.toInt)
+      val m = nums.zipWithIndex.foldLeft(Map.empty[Int, Int])((m, ni) => m + (ni._1 -> ni._2))
+      new NumGame(m, nums.last, nums.length-1)
     }
   }
 
   def part1(s: String): Int = {
     val game = NumGame.fromInitState(s)
-    while (game.turnCount < 2019) game.nextNum
-    game.nextNum
-  }
-
-  def part2(s: String): Int = {
-    val game = NumGame.fromInitState(s)
-    while (game.turnCount < 29_999_999) game.nextNum
+    while (game.turnCount < 2020) game.nextNum
+    println(game.history)
     game.nextNum
   }
 }

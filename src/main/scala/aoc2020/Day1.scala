@@ -9,11 +9,9 @@ object Day1 {
     val nums = is.map(s => Integer.parseInt(s))
     var sol = 0
     breakable{
-      for (
-        i <- nums.indices;
-        j <- nums.indices
-        if (j > i)
-      ) {
+      for (i <- nums.indices;
+           j <- nums.indices
+           if (i < j)) {
         if (nums(j) + nums(i) == 2020) {
           sol = nums(i) * nums(j)
           break

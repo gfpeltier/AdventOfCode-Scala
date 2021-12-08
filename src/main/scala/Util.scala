@@ -2,7 +2,7 @@ import scala.io.Source
 
 object Util {
   def readInputLines(fpath: String): List[String] = {
-    val sbuf = Source.fromFile(fpath)
+    val sbuf = Source.fromResource(fpath)
     val lines = sbuf.getLines.toList
     sbuf.close()
     lines
